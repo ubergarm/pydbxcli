@@ -11,8 +11,6 @@ RUN apk add --no-cache python3 \
 
 COPY . /app
 
-WORKDIR /app
+ENTRYPOINT ["/usr/bin/python3", "/app/pydbxcli.py"]
 
-ENTRYPOINT /app/pydbxcli.py
-
-CMD version
+CMD ["version"]
