@@ -5,7 +5,6 @@ import sys
 import argparse
 import signal
 import dropbox
-import numpy
 
 __version__ = 0.1
 
