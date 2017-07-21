@@ -106,6 +106,7 @@ def ls(args):
     while True:
         files = dbx.files_list_folder(path=args.path, recursive=args.r)
         for entry in files.entries:
+            #skip any paths specified in --excludePaths
             if any(exclude.startswith(getattr(entry, 'path_display', '-')) for exclude in args.excludePaths):
                 continue;
 
