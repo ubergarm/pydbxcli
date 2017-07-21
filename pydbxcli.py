@@ -107,7 +107,7 @@ def ls(args):
         files = dbx.files_list_folder(path=args.path, recursive=args.r)
         for entry in files.entries:
             #skip any paths specified in --excludePaths
-            if any(exclude.startswith(getattr(entry, 'path_display', '-')) for exclude in args.excludePaths):
+            if any(exclude.startswith(getattr(entry, 'path_display')) for exclude in args.excludePaths):
                 continue;
 
             print('{:>8}  {:>20}  {}'.format(sizeof_fmt(getattr(entry, 'size', 0)),
@@ -129,7 +129,7 @@ def get(args):
     while True:
         for entry in files.entries:
             #skip any paths specified in --excludePaths
-            if any(exclude.startswith(getattr(entry, 'path_display', '-')) for exclude in args.excludePaths):
+            if any(exclude.startswith(getattr(entry, 'path_display')) for exclude in args.excludePaths):
                 continue;
 
             size = getattr(entry, 'size', None)

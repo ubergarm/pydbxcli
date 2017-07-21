@@ -18,6 +18,11 @@ Recursively list all files in Dropbox:
 ./pydbxcli.py ls -r /
 ```
 
+Recursively list all files in Dropbox excluding certian folders:
+```bash
+./pydbxcli.py ls -r '/' --excludePaths '/Team Folder/IgnoreThisFolder' '/Team Folder/IgnoreThisFolderToo'
+```
+
 Recursively download specific Dropbox directory to local directory
 ```bash
 ./pydbxcli.py get -r /mystuff/dropbox/dir ./localdir
