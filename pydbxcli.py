@@ -47,6 +47,13 @@ def main():
                            type=str,
                            default='/',
                            help='which path from which to list')
+    parser_ls.add_argument('--excludePaths',
+                           nargs='*',
+                           default=[],
+                           help=("a list of folder paths to ignore. "
+                                 "example: --excludePaths '/Team Folders/IgnoreThisFolder' "
+                                 "'/Team Folders/IgnoreThisFolderToo'")
+                           )
     parser_ls.set_defaults(func=ls)
 
     # create the parser for the "get" command
@@ -64,6 +71,13 @@ def main():
                            type=str,
                            default='.',
                            help='which path on the local machine to store downloads')
+    parser_ls.add_argument('--excludePaths',
+                           nargs='*',
+                           default=[],
+                           help=("a list of folder paths to ignore. "
+                                 "example: --excludePaths '/Team Folders/IgnoreThisFolder' "
+                                 "'/Team Folders/IgnoreThisFolderToo'")
+                           )
     parser_ls.set_defaults(func=get)
 
     # parse the args and call the selected command function default to help and version
@@ -98,6 +112,11 @@ def ls(args):
     while True:
         files = dbx.files_list_folder(path=args.path, recursive=args.r)
         for entry in files.entries:
+            #skip any paths specified in --excludePaths
+            if any(map(getattr(entry, 'path_display').startswith, args.excludePaths)):
+                print('Excluding {}'.format(getattr(entry, 'path_display')))
+                continue
+
             print('{:>8}  {:>20}  {}'.format(sizeof_fmt(getattr(entry, 'size', 0)),
                                              str(getattr(entry, 'client_modified', '-')),
                                              getattr(entry, 'path_display', '-')))
@@ -116,6 +135,11 @@ def get(args):
     files = dbx.files_list_folder(path=args.src_path, recursive=args.r)
     while True:
         for entry in files.entries:
+            # skip any paths specified in --excludePaths
+            if any(map(getattr(entry, 'path_display').startswith, args.excludePaths)):
+                print('Excluding {}'.format(getattr(entry, 'path_display')))
+                continue
+
             size = getattr(entry, 'size', None)
             # skip empty files and directories
             if not size:
